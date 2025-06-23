@@ -74,7 +74,7 @@ export async function doctorLogin(req, res, next) {
 export async function doctorUpdate(req, res, next) {
   try {
     const { id } = req.user;
-    const { username, password } = req.body;
+    const { username, password, specialization } = req.body;
 
     const isUsernameExist = await prisma.doctor.findFirst({
       where: {
@@ -82,17 +82,18 @@ export async function doctorUpdate(req, res, next) {
       },
     });
 
-    if (isUsernameExist) {
+    if (!isUsernameExist) {
       createError(400, "Username is already exist");
     }
 
     const hash = await bcrypt.hash(password, 10);
 
-    const updated = await prisma.user.update({
+    const updated = await prisma.doctor.update({
       where: { id },
       data: {
         username,
         password: hash,
+        specialization
       },
       omit: {
         password: true,

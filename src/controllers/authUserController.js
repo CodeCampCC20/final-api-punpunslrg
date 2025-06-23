@@ -71,7 +71,7 @@ export async function userUpdate(req, res, next) {
     const { id } = req.user;
     const { username, password } = req.body;
 
-    const isUsernameExist = await prisma.doctor.findFirst({
+    const isUsernameExist = await prisma.user.findFirst({
       where: {
         username,
       },
