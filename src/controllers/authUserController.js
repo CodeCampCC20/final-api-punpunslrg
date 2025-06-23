@@ -210,22 +210,22 @@ export async function deleteRecord(req, res, next) {
 export async function getNoteFromDoc(req, res, next) {
   try {
     const { id } = req.user;
-    const isNoteExist = await prisma.doctorNote.findFirst({
+    const records = await prisma.doctorNote.findFirst({
       where: {
-        id: Number(id),
+        userId: Number(id),
       },
     });
 
-    if (!isNoteExist) {
-      createError(400, "Record doesn't exist");
-    }
-    const recordFromDoc = await prisma.doctorNote.findFirst({
-      where: {
-        userId: id,
-      },
-    });
+    // if (!isNoteExist) {
+    //   createError(400, "Record doesn't exist");
+    // }
+    // const recordFromDoc = await prisma.doctorNote.findFirst({
+    //   where: {
+    //     userId: id,
+    //   },
+    // });
 
-    res.status(200).json({ records: recordFromDoc });
+    res.status(200).json({ records });
   } catch (error) {
     next(error);
   }
