@@ -139,7 +139,7 @@ export async function getRecordById(req, res, next) {
     const { id } = req.params;
 
     const recordById = await prisma.healthRecord.findFirst({
-      where: { id: Number(id) },
+      where: { id: Number(id), userId: req.user.id },
     });
 
     if (!recordById) {
