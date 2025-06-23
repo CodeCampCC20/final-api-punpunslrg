@@ -13,7 +13,7 @@ export async function authUserCheck(req, res, next) {
     const token = header.split(" ")[1];
 
     const payload = jwt.verify(token, process.env.USER_SECRET, {
-      algorithm: "HS256",
+      algorithms: ["HS256"],
     });
 
     if (!payload) {

@@ -5,7 +5,7 @@ import bcrypt from "bcryptjs";
 
 export async function doctorRegister(req, res, next) {
   try {
-    const { username, password, confirmPassword, specialization } = req.body;
+    const { username, password, specialization } = req.body;
 
     const user = await prisma.doctor.findFirst({
       where: {
@@ -75,6 +75,16 @@ export async function doctorUpdate(req, res, next) {
   try {
     const { id } = req.user;
     const { username, password } = req.body;
+
+    const isUsernameExist = await prisma.doctor.findFirst({
+      where: {
+        username,
+      },
+    });
+
+    if (isUsernameExist) {
+      createError(400, "Username is already exist");
+    }
 
     const hash = await bcrypt.hash(password, 10);
 
